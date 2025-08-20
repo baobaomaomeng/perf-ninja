@@ -8,8 +8,16 @@
 // This function allows you to change the number of columns in a matrix. 
 // In other words, it defines how many elements are in each row.
 // hint: you need to allocate dummy columns to achieve proper data alignment.
-int n_columns(int N) {  
-  return N;
+
+#define SOLUTION
+int n_columns(int N) {
+  #ifdef SOLUTION
+    int t = (N * sizeof(float) +63) / 64;
+    int aligned_bytes = t * 64;
+    return aligned_bytes / sizeof(float);
+  #else  
+     return N;
+  #endif
 }
 // ******************************************
 

@@ -6,15 +6,60 @@
 #include <cmath>
 #include <ios>
 
+//#define SOLUTION
+//#define SOLUTION2
+//实践证明，SOLUTION2的性能会比SOLUTION的性能高2%左右
 // ******************************************
 // ONLY THE FOLLOWING FUNCTION IS BENCHMARKED
 // Compute the histogram of image pixels
 std::array<uint32_t, 256> computeHistogram(const GrayscaleImage& image) {
+  
+  #ifdef SOLUTION
+    const int num = 4;
+    std::array<uint32_t, 256> hist[num];
+    #pragma unroll
+    for(int i=0;i<num;++i)
+      hist[i].fill(0);
+    int idx = 0;
+    #pragma unroll
+    for (int i = 0; i < image.width * image.height; ++i){
+      hist[i%4][image.data[i]]++;
+    }
+    #pragma unroll
+    for(int j=0;j<=255;++j){
+      hist[0][j]+=hist[1][j]+hist[2][j]+hist[3][j];
+    }
+    return hist[0];
+  #elifdef SOLUTION2
+    std::array<uint32_t, 256> hist1;
+    std::array<uint32_t, 256> hist2;
+    std::array<uint32_t, 256> hist3;
+    std::array<uint32_t, 256> hist4;
+    hist1.fill(0);
+    hist2.fill(0);
+    hist3.fill(0);
+    hist4.fill(0);
+    int i;
+    for (i = 0; i+3 < image.width * image.height; i+=4){
+      hist1[image.data[i]]++;
+      hist2[image.data[i+1]]++;
+      hist3[image.data[i+2]]++;
+      hist4[image.data[i+3]]++;
+    }
+    for(;i<image.width * image.height; i++){
+      hist1[image.data[i]]++;
+    }
+    for(i=0;i<256;++i){
+      hist1[i] += hist2[i] + hist3[i] + hist4[i];
+    }
+    return hist1;
+  #else
   std::array<uint32_t, 256> hist;
   hist.fill(0);
   for (int i = 0; i < image.width * image.height; ++i)
     hist[image.data[i]]++;
-  return hist;
+  return  hist;
+  #endif
 }
 // ******************************************
 
