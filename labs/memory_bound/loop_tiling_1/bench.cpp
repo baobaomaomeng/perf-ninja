@@ -3,7 +3,7 @@
 #include "solution.hpp"
 
 static void bench1(benchmark::State &state) {
-  constexpr int N = 2000;
+  constexpr int N = 20000;
 
   MatrixOfDoubles in;
   MatrixOfDoubles out;
