@@ -11,3 +11,7 @@ void init(InputVector &data);
 void zero(OutputVector &data, std::size_t size);
 void imageSmoothing(const InputVector &inA, uint8_t radius,
                     OutputVector &outResult);
+
+// Baseline scalar implementation for benchmarking comparison
+void imageSmoothing_scalar(const InputVector &inA, uint8_t radius,
+                           OutputVector &outResult);
